@@ -106,7 +106,6 @@ class Dungeon_Room:
 
 # Instantiate the player character with described attributes
 class Player:
-	
 	def __init__(self, name, gender, description, inventory, player_hp, player_mp, \
 	mood, level, equipped, room_number, str, dex, con, int, alive):
 		self.name = name
@@ -351,7 +350,7 @@ def examine(object):
 						print "You see %s. It is open." % (current_object.description)
 						if current_object.contents.viewvalues() != None:
 							# need to add for loop for multiple objects
-							contents = current_room_objects[current_object.contents['contents']].description
+							contents = current_room_objects[current_object.contents].description
 							print "\nInside you can make out %s." % contents	
 						else:
 							print "There is nothing inside."
