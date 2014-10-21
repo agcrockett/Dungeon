@@ -62,7 +62,6 @@ def pull_all_objects():
 				global_dict[dict_list[sheet_number]][keys[keys_index]].update(new_value)
 			keys_index += 1
 			
-
 '''
 # Allow user to input a name and gender	
 def personalisation():
@@ -191,7 +190,7 @@ class Interactable:
 		self.discovered = discovered
 		self.possessed = possessed
 		self.location = location
-		
+				
 ############################################################################################
 # Actions 
 ############################################################################################	
@@ -387,9 +386,11 @@ def take(object):
 		print "You take the %s." % object
 		current_object.takeable = False
 		inv[object] = current_object
-		#if current_object.location == 'chest':
-			#del current_room_objects['chest']['current_object']
-			
+		print current_object.location
+		if current_object.location == 'chest':
+			print current_object.name
+			del current_room_objects[current_object.name]
+		print current_room_objects.keys()
 		current_object.location = 'inventory'
 		
 	else:
