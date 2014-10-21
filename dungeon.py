@@ -339,28 +339,24 @@ def examine(object):
 		
 		# if object is an interactable check for closed or opened
 		elif isinstance(current_object, Interactable):
-		
 			if current_object.openable == False:
-				print "You see %s." % current_object.description
-				
+				print "You see %s." % current_object.description	
 			elif current_object.openable == True:
-			
 				if current_object.opened == True:
 					if current_object.type == 'chest':
-						print "You see %s. It is open." % (current_object.description)
-						if current_object.contents.viewvalues() != None:
+						print "You see %s. \nIt is open." % (current_object.description)
+						if is_empty(current_object.contents) == False:
 							# need to add for loop for multiple objects
-							contents = current_room_objects[current_object.contents].description
-							print "\nInside you can make out %s." % contents	
+							for item in current_object.contents.keys():
+								if current_object.contents[item].location == 'chest':
+									print "There is something inside."
+									print "\nYou see %s." % current_object.contents[item].description
 						else:
 							print "There is nothing inside."
-						
 					elif current_object.type == 'door':
 						print "You see %s. It is open." % current_object.description
-						
 				elif current_object.opened == False:
 					print "You see %s. It is closed." % current_object.description
-					
 		else:
 			print "You see %s." % current_object.description
 	
@@ -376,7 +372,7 @@ def take(object):
 	current_object = current_room_objects[object]
 	inv = player_character.inventory	
 	
-	if isinstance(current_object, Consumable) and current_object.takeable == True: 
+	if isinstance(current_object, Consumable) and current_object.takeable == True and current_object.location != 'inventory': 
 		if current_object.consumed == False:
 			print "You take the %s." % object
 			current_object.takeable = False
@@ -387,12 +383,13 @@ def take(object):
 		else: 
 			print "There is nothing left but %s." % current_object.consumed_description
 			
-	elif isinstance(current_object, Interactable) and current_object.takeable == True:
+	elif isinstance(current_object, Interactable) and current_object.takeable == True and current_object.location != 'inventory':
 		print "You take the %s." % object
 		current_object.takeable = False
 		inv[object] = current_object
-		# if current_object.location == 'chest':
-			# print current_room_objects['chest'].contents['contents'][object]
+		#if current_object.location == 'chest':
+			#del current_room_objects['chest']['current_object']
+			
 		current_object.location = 'inventory'
 		
 	else:
