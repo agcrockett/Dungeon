@@ -7,8 +7,9 @@ import copy
 
 '''
 Issues:
-inventory not functional
-combat not interesting
+inventory not functional - doesn't update when items are added
+can examine key before chest is opened
+can't talk to characters
 '''
 
 ############################################################################################
@@ -218,6 +219,7 @@ def open(object):
 						# need to add for loop for multiple objects
 						print "\nInside you can make out %s." % contents.description
 						contents.takeable = True
+						contents.discovered = True
 						
 					elif is_empty(current_object.contents) == True:
 						print "There's nothing inside. Locator 1: open."
@@ -356,8 +358,12 @@ def examine(object):
 						print "You see %s. It is open." % current_object.description
 				elif current_object.opened == False:
 					print "You see %s. It is closed." % current_object.description
+		
 		else:
-			print "You see %s." % current_object.description
+			if current_object.discovered == True:
+				print "You see %s." % current_object.description
+			else:
+				print "There is no such thing visible."
 	
 	# self prints the current inventory, your name, weapons and mood	
 	elif object == 'self':
@@ -435,8 +441,7 @@ def inv_check():
 		x = ', '.join(inv_list)
 		return x
 	else:
-		return "a few meagre specks of a long-since-eaten bread roll"
-
+		return "a few meagre specks of a long-since-eaten bread roll."
 
 ############################################################################################
 # Meta Actions
@@ -717,7 +722,6 @@ valid_actions = ['eat', 'drink', 'examine', 'use', 'open', 'take', 'attack']
 
 pull_all_objects()
 
-
 # create a Dungeon_Room instance for each room, and give it the attributes contained in the 
 # given dictionary
 room_A1 = Dungeon_Room(**room_A1_dict)
@@ -754,7 +758,5 @@ print "\n"
 print current_room.description
 
 print player_character.self_description()
-
-
 
 main_loop()
